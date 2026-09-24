@@ -22,32 +22,6 @@ if (menuToggle && mainNav) {
             ? '<i class="bi bi-x-lg"></i>'
             : '<i class="bi bi-list"></i>';
 
-        menuToggle.setAttribute(
-            "aria-label",
-            isOpen ? "Close navigation menu" : "Open navigation menu"
-        );
-
-    });
-
-
-    /* Close mobile menu when a link is clicked */
-
-    mainNav.querySelectorAll("a").forEach(function (link) {
-
-        link.addEventListener("click", function () {
-
-            mainNav.classList.remove("open");
-
-            menuToggle.innerHTML =
-                '<i class="bi bi-list"></i>';
-
-            menuToggle.setAttribute(
-                "aria-label",
-                "Open navigation menu"
-            );
-
-        });
-
     });
 
 }
@@ -60,70 +34,16 @@ if (menuToggle && mainNav) {
 const themeToggle =
     document.getElementById("themeToggle");
 
-
-function updateThemeIcon() {
-
-    if (!themeToggle) {
-        return;
-    }
-
-    const icon =
-        themeToggle.querySelector("i");
-
-    const isDark =
-        document.documentElement.classList.contains("dark-mode");
-
-
-    if (icon) {
-
-        icon.className = isDark
-            ? "bi bi-sun-fill"
-            : "bi bi-moon-stars-fill";
-
-    }
-
-
-    themeToggle.setAttribute(
-        "aria-label",
-        isDark
-            ? "Switch to light mode"
-            : "Switch to dark mode"
-    );
-
-
-    themeToggle.setAttribute(
-        "title",
-        isDark
-            ? "Switch to light mode"
-            : "Switch to dark mode"
-    );
-
-}
-
-
-/* Load saved theme */
-
-const savedTheme =
-    localStorage.getItem("pizzylummie-theme");
-
-
-if (savedTheme === "dark") {
-
-    document.documentElement.classList.add("dark-mode");
-
-} else {
-
-    document.documentElement.classList.remove("dark-mode");
-
-}
-
-
-updateThemeIcon();
-
-
-/* Toggle theme */
-
 if (themeToggle) {
+
+    const savedTheme =
+        localStorage.getItem("pizzylummie-theme");
+
+    if (savedTheme === "dark") {
+        document.documentElement.classList.add("dark-mode");
+    }
+
+    updateThemeIcon();
 
     themeToggle.addEventListener("click", function () {
 
@@ -132,12 +52,10 @@ if (themeToggle) {
         const isDark =
             document.documentElement.classList.contains("dark-mode");
 
-
         localStorage.setItem(
             "pizzylummie-theme",
             isDark ? "dark" : "light"
         );
-
 
         updateThemeIcon();
 
@@ -146,52 +64,72 @@ if (themeToggle) {
 }
 
 
-/* =========================================================
-   PROJECT IMAGE LIGHTBOX
-   ========================================================= */
+function updateThemeIcon() {
 
-function openLightbox(imageSrc) {
+    const themeToggle =
+        document.getElementById("themeToggle");
 
-    const lightbox =
-        document.getElementById("lightbox");
+    if (!themeToggle) return;
 
-    const lightboxImage =
-        document.getElementById("lightboxImage");
+    const isDark =
+        document.documentElement.classList.contains("dark-mode");
 
-
-    if (!lightbox || !lightboxImage) {
-        return;
-    }
-
-
-    lightboxImage.src = imageSrc;
-
-    lightbox.classList.add("active");
-
-    document.body.style.overflow = "hidden";
+    themeToggle.innerHTML = isDark
+        ? '<i class="bi bi-sun-fill"></i>'
+        : '<i class="bi bi-moon-stars-fill"></i>';
 
 }
 
 
+/* =========================================================
+   PROJECT LIGHTBOX
+   ========================================================= */
+
+const lightbox =
+    document.getElementById("lightbox");
+
+const lightboxImage =
+    document.getElementById("lightboxImage");
+
+const projectImages =
+    document.querySelectorAll(".project-image");
+
+
+/* Open ANY project image */
+
+projectImages.forEach(function (project) {
+
+    project.addEventListener("click", function () {
+
+        const image =
+            project.querySelector("img");
+
+        if (!image || !lightbox || !lightboxImage) {
+            return;
+        }
+
+        lightboxImage.src = image.src;
+
+        lightboxImage.alt = image.alt;
+
+        lightbox.classList.add("active");
+
+        document.body.style.overflow = "hidden";
+
+    });
+
+});
+
+
+/* Close lightbox */
+
 function closeLightbox() {
 
-    const lightbox =
-        document.getElementById("lightbox");
-
-
-    const lightboxImage =
-        document.getElementById("lightboxImage");
-
-
-    if (!lightbox) {
-        return;
-    }
-
+    if (!lightbox) return;
 
     lightbox.classList.remove("active");
 
-    document.body.style.overflow = "auto";
-
+    document.body.style.overflow = "";
 
     if (lightboxImage) {
         lightboxImage.src = "";
@@ -200,20 +138,14 @@ function closeLightbox() {
 }
 
 
-/* Close lightbox when clicking outside image */
-
-const lightbox =
-    document.getElementById("lightbox");
-
+/* Close when clicking the dark background */
 
 if (lightbox) {
 
     lightbox.addEventListener("click", function (event) {
 
         if (event.target === lightbox) {
-
             closeLightbox();
-
         }
 
     });
@@ -221,7 +153,23 @@ if (lightbox) {
 }
 
 
-/* Close lightbox with ESC */
+/* Close button */
+
+const lightboxClose =
+    document.querySelector(".lightbox-close");
+
+if (lightboxClose) {
+
+    lightboxClose.addEventListener("click", function () {
+
+        closeLightbox();
+
+    });
+
+}
+
+
+/* Close with ESC */
 
 document.addEventListener("keydown", function (event) {
 
@@ -232,25 +180,3 @@ document.addEventListener("keydown", function (event) {
     }
 
 });
-
-
-/* =========================================================
-   PREVENT LIGHTBOX IMAGE FROM CLOSING IT
-   ========================================================= */
-
-const lightboxImage =
-    document.getElementById("lightboxImage");
-
-
-if (lightboxImage) {
-
-    lightboxImage.addEventListener(
-        "click",
-        function (event) {
-
-            event.stopPropagation();
-
-        }
-    );
-
-}
