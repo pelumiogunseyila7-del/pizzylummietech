@@ -1,74 +1,699 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Projects | PizzylummieTech</title>
-    <script
-        id="theme-init">if (localStorage.getItem("pizzylummie-theme") === "dark") { document.documentElement.classList.add("dark-mode") }</script>
+
+    <meta name="description"
+        content="Explore graphic design, branding, event flyers and creative projects by PizzylummieTech.">
+
+    <!-- Main stylesheet -->
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        /* ==============================
+           PROJECTS PAGE
+        ============================== */
+
+        .projects-page {
+            padding: 80px 7%;
+            min-height: 70vh;
+        }
+
+        .projects-heading {
+            text-align: center;
+            max-width: 750px;
+            margin: 0 auto 50px;
+        }
+
+        .projects-heading small {
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .projects-heading h1 {
+            font-size: 42px;
+            margin: 12px 0;
+        }
+
+        .projects-heading p {
+            line-height: 1.7;
+            opacity: 0.8;
+        }
+
+        /* Project grid */
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .project-card {
+            background: #ffffff;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .project-image {
+            position: relative;
+            width: 100%;
+            height: 330px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.04);
+        }
+
+        .image-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .image-overlay {
+            opacity: 1;
+        }
+
+        .image-overlay span {
+            background: #ffffff;
+            color: #111111;
+            padding: 12px 18px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .project-content {
+            padding: 24px;
+        }
+
+        .project-category {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+
+        .project-content h2 {
+            font-size: 21px;
+            margin: 0 0 10px;
+        }
+
+        .project-content p {
+            line-height: 1.6;
+            font-size: 15px;
+            opacity: 0.75;
+            margin: 0;
+        }
+
+        /* Empty image protection */
+
+        .project-image img {
+            background: #eeeeee;
+        }
+
+        /* ==============================
+           IMAGE LIGHTBOX
+        ============================== */
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 88vh;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            color: white;
+            font-size: 35px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .lightbox-close:hover {
+            opacity: 0.7;
+        }
+
+        /* ==============================
+           DARK MODE
+        ============================== */
+
+        html.dark-mode .project-card {
+            background: #111827;
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        html.dark-mode .project-content h2,
+        html.dark-mode .projects-heading h1 {
+            color: #ffffff;
+        }
+
+        /* ==============================
+           MOBILE
+        ============================== */
+
+        @media (max-width: 900px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .projects-page {
+                padding: 60px 5%;
+            }
+
+            .projects-heading h1 {
+                font-size: 32px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-image {
+                height: 380px;
+            }
+
+            .lightbox img {
+                max-width: 96%;
+                max-height: 80vh;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <header class="site-header">
-        <div class="container nav"><a class="brand" href="index.html">Pizzylummie<span>Tech</span></a><button
-                class="menu-toggle"><i class="bi bi-list"></i></button><button class="theme-toggle"
-                aria-label="Toggle dark mode" title="Toggle dark mode"><i class="bi bi-moon-stars-fill"></i></button>
-            <nav><a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a
-                    class="active" href="projects.html">Projects</a><a href="contact.html">Contact</a></nav>
-        </div>
-    </header>
-    <main>
-        <section class="page-hero">
-            <div class="container"><small>PORTFOLIO</small>
-                <h1>Selected projects and experiments.</h1>
-                <p>A growing collection of websites, designs and digital projects.</p>
-            </div>
-        </section>
-        <section class="section">
-            <div class="container">
-                <div class="project-grid">
-                    <article class="project">
-                        <div class="project-icon"><i class="bi bi-building"></i></div>
-                        <div><small>WEB DESIGN</small>
-                            <h3>Business Website</h3>
-                            <p>A clean responsive website concept for a growing business.</p>
-                        </div>
-                    </article>
-                    <article class="project">
-                        <div class="project-icon"><i class="bi bi-church"></i></div>
-                        <div><small>WEB PROJECT</small>
-                            <h3>Church Website</h3>
-                            <p>A simple, accessible website concept for a church community.</p>
-                        </div>
-                    </article>
-                    <article class="project">
-                        <div class="project-icon"><i class="bi bi-phone"></i></div>
-                        <div><small>DIGITAL PRODUCT</small>
-                            <h3>Mobile App Concept</h3>
-                            <p>A profile and community-focused interface concept.</p>
-                        </div>
-                    </article>
-                    <article class="project">
-                        <div class="project-icon"><i class="bi bi-palette"></i></div>
-                        <div><small>GRAPHIC DESIGN</small>
-                            <h3>Creative Designs</h3>
-                            <p>Promotional graphics and visual experiments for digital media.</p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <div class="container footer"><span>© 2026 PizzylummieTech. All rights reserved.</span><span>Built with
-                creativity &amp; code.</span></div>
-    </footer><a class="floating-whatsapp"
-        href="https://wa.me/2349038271875?text=Hello%20PizzylummieTech%2C%20I%20would%20like%20to%20make%20an%20inquiry."
-        target="_blank"><i class="bi bi-whatsapp"></i></a>
-    <script src="script.js"></script>
-</body>
 
+    <!-- ==============================
+         HEADER / NAVIGATION
+    ============================== -->
+
+    <header>
+
+        <nav>
+
+            <a href="index.html" class="logo">
+                Pizzylummie<span>Tech</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="projects.html" class="active">Projects</a>
+                <a href="contact.html">Contact</a>
+
+                <!-- Dark mode button -->
+                <button id="themeToggle" class="theme-toggle"
+                    aria-label="Toggle dark mode">
+                    <i class="bi bi-moon"></i>
+                </button>
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ==============================
+         PROJECTS
+    ============================== -->
+
+    <main class="projects-page">
+
+        <div class="projects-heading">
+
+            <small>MY PORTFOLIO</small>
+
+            <h1>Creative Projects</h1>
+
+            <p>
+                A selection of my graphic design, promotional, event,
+                branding and creative projects created for individuals,
+                businesses and organizations.
+            </p>
+
+        </div>
+
+
+        <div class="projects-grid">
+
+
+            <!-- =================================
+                 PROJECT 1
+            ================================== -->
+
+            <article class="project-card">
+
+                <div class="project-image"
+                    onclick="openLightbox('images/projects/pizzylummie-venture.jpg')">
+
+                    <img
+                        src="images/projects/pizzylummie-venture.jpg"
+                        alt="Pizzylummie Venture Graphic Design Flyer"
+                        loading="lazy">
+
+                    <div class="image-overlay">
+                        <span>
+                            <i class="bi bi-zoom-in"></i>
+                            View Design
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="project-content">
+
+                    <span class="project-category">
+                        Graphic Design
+                    </span>
+
+                    <h2>
+                        Pizzylummie Venture
+                    </h2>
+
+                    <p>
+                        Promotional flyer designed to showcase graphic
+                        design, branding, customization and printing
+                        services.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================
+                 PROJECT 2
+            ================================== -->
+
+            <article class="project-card">
+
+                <div class="project-image"
+                    onclick="openLightbox('images/projects/right-choice-beauty-1.jpg')">
+
+                    <img
+                        src="images/projects/right-choice-beauty-1.jpg"
+                        alt="Right Choice Beauty World Training Flyer"
+                        loading="lazy">
+
+                    <div class="image-overlay">
+                        <span>
+                            <i class="bi bi-zoom-in"></i>
+                            View Design
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="project-content">
+
+                    <span class="project-category">
+                        Beauty & Advertising
+                    </span>
+
+                    <h2>
+                        Right Choice Beauty World
+                    </h2>
+
+                    <p>
+                        Promotional flyer created to advertise beauty
+                        training programmes including makeup, gele,
+                        nails and hair-related services.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================
+                 PROJECT 3
+            ================================== -->
+
+            <article class="project-card">
+
+                <div class="project-image"
+                    onclick="openLightbox('images/projects/right-choice-beauty-2.jpg')">
+
+                    <img
+                        src="images/projects/right-choice-beauty-2.jpg"
+                        alt="Right Choice Beauty World Promotional Design"
+                        loading="lazy">
+
+                    <div class="image-overlay">
+                        <span>
+                            <i class="bi bi-zoom-in"></i>
+                            View Design
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="project-content">
+
+                    <span class="project-category">
+                        Promotional Design
+                    </span>
+
+                    <h2>
+                        Beauty Training Promotion
+                    </h2>
+
+                    <p>
+                        Alternative promotional artwork for Right Choice
+                        Beauty World, designed to attract students to
+                        professional beauty training classes.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================
+                 PROJECT 4
+            ================================== -->
+
+            <article class="project-card">
+
+                <div class="project-image"
+                    onclick="openLightbox('images/projects/celestialism-2025.jpg')">
+
+                    <img
+                        src="images/projects/celestialism-2025.jpg"
+                        alt="CCC Imole Ayo Parish 1 Celestialism 2025 Flyer"
+                        loading="lazy">
+
+                    <div class="image-overlay">
+                        <span>
+                            <i class="bi bi-zoom-in"></i>
+                            View Design
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="project-content">
+
+                    <span class="project-category">
+                        Event Design
+                    </span>
+
+                    <h2>
+                        Celestialism 2025
+                    </h2>
+
+                    <p>
+                        Event promotional artwork created for CCC Imole
+                        Ayo Parish 1, City of Comfort, Akungba Akoko,
+                        for the Celestialism 2025 programme.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================
+                 PROJECT 5
+            ================================== -->
+
+            <article class="project-card">
+
+                <div class="project-image"
+                    onclick="openLightbox('images/projects/fyb-project.jpg')">
+
+                    <img
+                        src="images/projects/fyb-project.jpg"
+                        alt="FYB Promotional Graphic Design"
+                        loading="lazy">
+
+                    <div class="image-overlay">
+                        <span>
+                            <i class="bi bi-zoom-in"></i>
+                            View Design
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="project-content">
+
+                    <span class="project-category">
+                        Promotional Design
+                    </span>
+
+                    <h2>
+                        FYB Project
+                    </h2>
+
+                    <p>
+                        Promotional graphic design created as a creative
+                        visual project with a strong event and branding
+                        presentation.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================
+                 PROJECT 6
+            ================================== -->
+
+            <article class="project-card">
+
+                <div class="project-image"
+                    onclick="openLightbox('images/projects/beauty-training.jpg')">
+
+                    <img
+                        src="images/projects/beauty-training.jpg"
+                        alt="Beauty Training Promotional Flyer"
+                        loading="lazy">
+
+                    <div class="image-overlay">
+                        <span>
+                            <i class="bi bi-zoom-in"></i>
+                            View Design
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="project-content">
+
+                    <span class="project-category">
+                        Graphic Design
+                    </span>
+
+                    <h2>
+                        Beauty Training Flyer
+                    </h2>
+
+                    <p>
+                        Creative promotional artwork designed to present
+                        beauty training options and attract prospective
+                        students.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- ==============================
+         LIGHTBOX
+    ============================== -->
+
+    <div class="lightbox" id="lightbox">
+
+        <span class="lightbox-close"
+            onclick="closeLightbox()">
+            &times;
+        </span>
+
+        <img id="lightboxImage"
+            src=""
+            alt="Project preview">
+
+    </div>
+
+
+    <!-- ==============================
+         WHATSAPP BUTTON
+    ============================== -->
+
+    <a
+        href="https://wa.me/2349038271875?text=Hello%20PizzylummieTech%2C%20I%20would%20like%20to%20make%20an%20inquiry."
+        class="floating-whatsapp"
+        target="_blank"
+        aria-label="Chat with PizzylummieTech on WhatsApp">
+
+        <i class="bi bi-whatsapp"></i>
+
+    </a>
+
+
+    <!-- ==============================
+         JAVASCRIPT
+    ============================== -->
+
+    <script>
+
+        /* ============================
+           IMAGE LIGHTBOX
+        ============================ */
+
+        function openLightbox(imageSrc) {
+
+            const lightbox = document.getElementById("lightbox");
+            const lightboxImage =
+                document.getElementById("lightboxImage");
+
+            lightboxImage.src = imageSrc;
+
+            lightbox.classList.add("active");
+
+            document.body.style.overflow = "hidden";
+        }
+
+
+        function closeLightbox() {
+
+            const lightbox =
+                document.getElementById("lightbox");
+
+            lightbox.classList.remove("active");
+
+            document.body.style.overflow = "auto";
+        }
+
+
+        /* Close lightbox when clicking outside image */
+
+        document.getElementById("lightbox")
+            .addEventListener("click", function(event) {
+
+                if (event.target === this) {
+                    closeLightbox();
+                }
+
+            });
+
+
+        /* Close with ESC key */
+
+        document.addEventListener("keydown", function(event) {
+
+            if (event.key === "Escape") {
+                closeLightbox();
+            }
+
+        });
+
+
+        /* ============================
+           DARK MODE
+        ============================ */
+
+        const themeToggle =
+            document.getElementById("themeToggle");
+
+        const savedTheme =
+            localStorage.getItem("pizzylummie-theme");
+
+        if (savedTheme === "dark") {
+
+            document.documentElement.classList.add("dark-mode");
+
+            themeToggle.innerHTML =
+                '<i class="bi bi-sun"></i>';
+
+        }
+
+
+        themeToggle.addEventListener("click", function() {
+
+            document.documentElement.classList.toggle("dark-mode");
+
+            const isDark =
+                document.documentElement.classList.contains("dark-mode");
+
+            localStorage.setItem(
+                "pizzylummie-theme",
+                isDark ? "dark" : "light"
+            );
+
+            themeToggle.innerHTML = isDark
+                ? '<i class="bi bi-sun"></i>'
+                : '<i class="bi bi-moon"></i>';
+
+        });
+
+    </script>
+
+</body>
 </html>
