@@ -1,0 +1,9 @@
+const menuToggle = document.querySelector('.menu-toggle'); 
+const nav = document.querySelector('.nav nav'); 
+if (menuToggle && nav) { menuToggle.addEventListener('click', () => nav.classList.toggle('open')); }
+const themeToggle = document.querySelector('.theme-toggle'); 
+function updateThemeIcon() { if (!themeToggle) return; const icon = themeToggle.querySelector('i'); 
+    const dark = document.documentElement.classList.contains('dark-mode'); 
+    if (icon) icon.className = dark ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill'; themeToggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode'); themeToggle.setAttribute('title', dark ? 'Switch to light mode' : 'Switch to dark mode') } 
+    if (themeToggle) { updateThemeIcon(); themeToggle.addEventListener('click', () => { document.documentElement.classList.toggle('dark-mode'); 
+        const dark = document.documentElement.classList.contains('dark-mode'); localStorage.setItem('pizzylummie-theme', dark ? 'dark' : 'light'); updateThemeIcon() }) }
